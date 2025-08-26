@@ -7,9 +7,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 WORKDIR /codebuild
 COPY ./embyHappyMod .
 
-RUN apt-get update -y && apt-get install -y build-essential zlib1g-dev
+RUN apt-get update -y && apt-get install -y build-essential zlib1g-dev tree
 RUN mkdir -p /output
-RUN cd embyHappyMod && dotnet publish -o /output
+RUN pwd; tree . ; cd embyHappyMod && dotnet publish -o /output ; tree /output
 
 # single layer deployed image
 FROM scratch
