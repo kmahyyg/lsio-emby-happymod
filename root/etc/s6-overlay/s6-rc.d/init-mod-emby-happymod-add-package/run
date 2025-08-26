@@ -7,7 +7,7 @@
 ## Ubuntu
 if [ -f /usr/bin/apt ]; then
     # apt dependencies packages from https://github.com/dotnet/dotnet-docker/blob/main/src/runtime-deps/8.0/noble/amd64/Dockerfile
-    echo "icu-libs tzdata curl ca-certificates libatomic1 libc6 libgcc-s1 libicu74 libssl3t64 libstdc++6 tzdata-legacy zlib1g" >> /mod-repo-packages-to-install.list
+    echo "tzdata tzdata-icu curl ca-certificates libatomic1 libc6 libgcc-s1 libicu74 libssl3t64 libstdc++6 tzdata-legacy zlib1g" >> /mod-repo-packages-to-install.list
 fi
 # Alpine
 if [ -f /sbin/apk ]; then
