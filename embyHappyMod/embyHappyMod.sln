@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36121.58 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "embyHappyMod", "embyHappyMod.csproj", "{F831537E-3ADC-4F5F-861E-01C4FA3F02BE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F831537E-3ADC-4F5F-861E-01C4FA3F02BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F831537E-3ADC-4F5F-861E-01C4FA3F02BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F831537E-3ADC-4F5F-861E-01C4FA3F02BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F831537E-3ADC-4F5F-861E-01C4FA3F02BE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {45AD2C47-1BDF-42FB-B898-5FA61BCCF52D}
+	EndGlobalSection
+EndGlobal
