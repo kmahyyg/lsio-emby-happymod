@@ -5,7 +5,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 as builder
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -y && apt-get install -y build-essential zlib1g-dev
 RUN mkdir -p /output
-RUN cd embyHappyMod && dotnet publish -o /output
+RUN cd ${GITHUB_WORKSPACE}/lsio-emby-happymod/embyHappyMod && dotnet publish -o /output
 
 # single layer deployed image
 FROM scratch
