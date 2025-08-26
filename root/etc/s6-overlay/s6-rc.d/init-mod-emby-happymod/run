@@ -11,13 +11,13 @@ if [ -f "$FLAG_FILE" ]; then
     exit 0
 fi
 
-/usr/local/bin/embyHappyMod
-
 proceed_files=(
     "Emby.Server.Implementations.dll"
     "Emby.Web.dll"
     "MediaBrowser.Model.dll"
 )
+
+/usr/local/bin/embyHappyMod
 
 if [[ $? -ne 0 ]]; then
     echo "[emby-crack] Emby HappyMod failed to run. Please check the logs."
