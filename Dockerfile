@@ -18,4 +18,7 @@ LABEL org.opencontainers.image.source="https://github.com/kmahyyg/lsio-emby-happ
 LABEL MAINTAINER="Patrick Young <16604643+kmahyyg@users.noreply.github.com>"
 LABEL Description="Emby Docker HappyMod for LinuxServer.io-Based Images"
 
+# copy s6 related service files
+COPY root/ /
+# add binaries and exectuables
 COPY --from=builder --chmod=755 /output/embyHappyMod /usr/local/bin/embyHappyMod
