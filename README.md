@@ -26,7 +26,7 @@ Referrence for S6 Service Lifecycle in LSIO docker image:
 
 ## Usage
 1. You must use base image from [LinuxServer.io Emby](https://hub.docker.com/r/lscr.io/linuxserver/emby)
-2. Host your own authorization server [here](#Host Authorization Server Yourself)
+2. Host your own authorization server [here](#host-authorization-server-yourself)
 3. Change `DOCKER_MODS` and add `EMBY_CRACK_URL` environment variable correspondingly
 ```diff
 services:
