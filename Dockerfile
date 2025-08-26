@@ -14,7 +14,7 @@ RUN cd embyHappyMod && dotnet publish -o /output
 # copy s6 related service files
 COPY root/ /root-layer/
 # add binaries and exectuables
-RUN cp -ar /output/embyHappyMod /root-layer/usr/local/bin/embyHappyMod ; chmod +x /root-layer/usr/local/bin/embyHappyMod ; tree /root-layer
+RUN mkdir -p /root-layer/usr/local/bin ; cp -ar /output/embyHappyMod /root-layer/usr/local/bin/embyHappyMod ; chmod +x /root-layer/usr/local/bin/embyHappyMod ; tree /root-layer
 
 
 # single layer deployed image
