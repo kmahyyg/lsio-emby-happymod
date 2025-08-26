@@ -10,3 +10,31 @@ if [ -f "$FLAG_FILE" ]; then
     echo "[emby-crack] Already initialized, skipping..."
     exit 0
 fi
+
+/usr/local/bin/embyHappyMod
+
+proceed_files=(
+    "Emby.Server.Implementations.dll"
+    "Emby.Web.dll"
+    "MediaBrowser.Model.dll"
+)
+
+if [[ $? -ne 0 ]]; then
+    echo "[emby-crack] Emby HappyMod failed to run. Please check the logs."
+    exit 1
+else
+    echo "[emby-crack] Emby HappyMod ran successfully."
+    for cfile in "${proceed_files[@]}"; do
+        if [ -f "$EMBY_PATH/$cfile" ]; then
+            echo "[emby-crack] Found $cfile, backing up now."
+            mv "$EMBY_PATH/$cfile" "$EMBY_PATH/$cfile.bak"
+            echo "[emby-crack] Replacing $cfile with cracked version."
+            mv "$EMBY_PATH/$cfile.crack" "$EMBY_PATH/$cfile"
+        else
+            echo "[emby-crack] $cfile not found, aborting crack installation."
+            exit 1
+        fi
+    done
+    touch "$FLAG_FILE"
+    echo "[emby-crack] Emby HappyMod installation completed successfully. flag file created."
+fi
