@@ -1,0 +1,4 @@
+#!/usr/bin/with-contenv bash
+
+# This is the init logic script that runs before the services in the container. Use `chmod +x` to set proper permissions.
+
