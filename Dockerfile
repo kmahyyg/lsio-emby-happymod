@@ -5,7 +5,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 as builder
 ENV DEBIAN_FRONTEND=noninteractive
 
 WORKDIR /codebuild
-COPY ./embyHappyMod .
+COPY ./embyHappyMod ./embyHappyMod
 
 RUN apt-get update -y && apt-get install -y build-essential zlib1g-dev tree
 RUN mkdir -p /output
