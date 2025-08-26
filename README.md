@@ -11,9 +11,16 @@ This is only used for research and learning purposes. Please do not use this in 
 
 GNU AGPL v3
 
+# FAQ
+
+Referrence for S6 Service Lifecycle in LSIO docker image:
+- https://github.com/linuxserver/docker-emby
+- https://github.com/just-containers/s6-overlay
+- https://github.com/linuxserver/docker-baseimage-ubuntu
+
 # Original Project README
 
-# Emby Crack - Docker mod for Emby
+## Emby Crack - Docker mod for Emby
 
 > Get Emby Premiere For Free，Method Referrence from [here](https://yubanmei.com/archives/133.html)
 
@@ -94,3 +101,8 @@ embycrack.sample.com {
     respond /emby/Plugins/SecurityInfo `{"SupporterKey":"","IsMBSupporter":true}`
 }
 ```
+
+## Further Reading
+
+- https://blog.jiawei.xin/?p=469
+- https://crackemby.mb6.top (You may not directly use this service due to different url rewritten policy, especially for amending ".php" extension)
