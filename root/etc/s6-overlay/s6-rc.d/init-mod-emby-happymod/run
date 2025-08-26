@@ -2,3 +2,11 @@
 
 # This is the init logic script that runs before the services in the container. Use `chmod +x` to set proper permissions.
 
+: "${EMBY_PATH:=/app/emby/system}"
+
+FLAG_FILE="$EMBY_PATH/.emby-crack-install"
+
+if [ -f "$FLAG_FILE" ]; then
+    echo "[emby-crack] Already initialized, skipping..."
+    exit 0
+fi
