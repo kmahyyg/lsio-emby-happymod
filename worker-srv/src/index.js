@@ -9,6 +9,9 @@
  */
 
 import { Router, cors, error, json } from 'itty-router';
+import { env } from "cloudflare:workers";
+
+const isDebug = (env.CUR_ENV === "troubleshoot");
 
 // allow cors to any domain
 const { preflight, corsify } = cors({
@@ -27,6 +30,12 @@ const router = Router({
 		finally: [corsify],
 });
 
+
+// util function
+function logDetailedRequest(req) {
+	console.log({"oriReq": {"url": req.url, "headers": Object.fromEntries(req.headers), "body": btoa(req.body)}});
+}
+
 // add status check
 router.get('/ystatus', () => {
   return new Response('OK', { status: 200 });
@@ -34,28 +43,33 @@ router.get('/ystatus', () => {
 
 // add echo check
 router.post('/reqlog', (req) => {
-	console.log({"oriReq": {"url": req.url, "headers": Object.fromEntries(req.headers), "body": btoa(req.body)}});
+	logDetailedRequest(req);
   	return new Response('Please check backend log', { status: 200 });
 });
 
 // add all related emby route
-router.all('/admin/service/registration/validateDevice', () => {
+router.all('/admin/service/registration/validateDevice', (r) => {
+	if (isDebug) { logDetailedRequest(r); }
 	return json({"cacheExpirationDays":3650,"message":"Device Valid","resultCode":"GOOD"});
 });
 
-router.all('/admin/service/registration/validate', () => {
+router.all('/admin/service/registration/validate', (r) => {
+	if (isDebug) { logDetailedRequest(r); }
 	return json({"featId":"MBSupporter","registered":true,"expDate":"2099-01-01","key":""});
 });
 
-router.all('/admin/service/registration/getStatus', () => {
+router.all('/admin/service/registration/getStatus', (r) => {
+	if (isDebug) { logDetailedRequest(r); }
 	return json({"deviceStatus":"","planType":"Lifetime","subscriptions":{}});
 });
 
-router.all('/admin/service/appstore/register', () => {
+router.all('/admin/service/appstore/register', (r) => {
+	if (isDebug) { logDetailedRequest(r); }
 	return json({"featId":"","registered":true,"expDate":"2099-01-01","key":""});
 });
 
-router.all('/emby/Plugins/SecurityInfo', () => {
+router.all('/emby/Plugins/SecurityInfo', (r) => {
+	if (isDebug) { logDetailedRequest(r); }
 	return json({"SupporterKey":"","IsMBSupporter":true});
 });
 
