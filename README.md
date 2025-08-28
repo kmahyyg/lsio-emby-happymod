@@ -37,6 +37,7 @@ services:
 +      DOCKER_MODS: other-docker-mod|ghcr.io/username/emby-happymod:version
 +      EMBY_CRACK_URL: https://embycrack.sample.com   # replace with your own URL
 ```
+4. After deployment of emby server, **DO NOT INPUT ANY LICENSE KEY** in emby web admin panel, otherwise your server will stay malfunctioned.
 
 ## Host Authorization Server Yourself
 
