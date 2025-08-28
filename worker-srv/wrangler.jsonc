@@ -8,7 +8,7 @@
 	"main": "src/index.js",
 	"compatibility_date": "2025-08-28",
 	"observability": {
-		"enabled": false,
+		"enabled": true,
 		// disable log for all requests
 		"head_sampling_rate": 0,
 		"logs": {
