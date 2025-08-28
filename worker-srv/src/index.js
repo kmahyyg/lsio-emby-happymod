@@ -32,8 +32,20 @@ const router = Router({
 
 
 // util function
+async function aLogDetailedRequest(req) {
+	var fBodyData;
+	if (req.body instanceof ReadableStream) {
+		let tmpResp = new Response(req.body);
+		let tmpBodyTxt = await tmpResp.text();
+		fBodyData = btoa(tmpBodyTxt);
+	} else {
+		fBodyData = "unknown-internal-error";
+	}
+	console.log({"oriReq": {"url": req.url, "headers": Object.fromEntries(req.headers), "bodyB64": fBodyData}});
+}
+
 function logDetailedRequest(req) {
-	console.log({"oriReq": {"url": req.url, "headers": Object.fromEntries(req.headers), "body": btoa(req.body)}});
+	aLogDetailedRequest(req).then(()=>{});
 }
 
 // add status check
