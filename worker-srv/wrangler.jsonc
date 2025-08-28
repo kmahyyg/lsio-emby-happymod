@@ -4,15 +4,15 @@
  */
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "worker-srv",
+	"name": "nanometer-fled-9cb6",
 	"main": "src/index.js",
 	"compatibility_date": "2025-08-28",
 	"observability": {
-		"enabled": true,
-		// enable log for all requests
-		"head_sampling_rate": 1,
+		"enabled": false,
+		// disable log for all requests
+		"head_sampling_rate": 0,
 		"logs": {
-			"invocation_logs": true
+			"invocation_logs": false
 		}
 	},
 	/**

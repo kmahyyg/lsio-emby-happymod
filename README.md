@@ -18,6 +18,9 @@ Referrence for S6 Service Lifecycle in LSIO docker image:
 - https://github.com/just-containers/s6-overlay
 - https://github.com/linuxserver/docker-baseimage-ubuntu
 
+Emby Official Guide:
+- https://emby.media/support/articles/Server-Data-Folder.html
+
 # Original Project README
 
 ## Emby Crack - Docker mod for Emby

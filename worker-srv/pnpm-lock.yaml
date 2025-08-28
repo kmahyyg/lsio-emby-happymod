@@ -7,12 +7,16 @@ settings:
 importers:
 
   .:
+    dependencies:
+      itty-router:
+        specifier: ^5.0.22
+        version: 5.0.22
     devDependencies:
       '@cloudflare/vitest-pool-workers':
-        specifier: ^0.8.19
+        specifier: ^0.8.68
         version: 0.8.68(@vitest/runner@3.2.4)(@vitest/snapshot@3.2.4)(vitest@3.2.4)
       vitest:
-        specifier: ~3.2.0
+        specifier: ~3.2.4
         version: 3.2.4
       wrangler:
         specifier: ^4.33.1
@@ -799,6 +803,9 @@ packages:
 
   is-arrayish@0.3.2:
     resolution: {integrity: sha512-eVRqCvVlZbuw3GrM63ovNSNAeA1K16kaR/LRY/92w0zxQ5/1YzwblUX652i4Xs9RwAGjW9d9y6X88t8OaAJfWQ==}
+
+  itty-router@5.0.22:
+    resolution: {integrity: sha512-9hmdGErWdYDOurGYxSbqLhy4EFReIwk71hMZTJ5b+zfa2zjMNV1ftFno2b8VjAQvX615gNB8Qxbl9JMRqHnIVA==}
 
   js-tokens@9.0.1:
     resolution: {integrity: sha512-mxa9E9ITFOt0ban3j6L5MpjwegGz6lBQmM1IJkWeBZGcMxto50+eWdjC/52xDbS2vy0k7vIMK0Fe2wfL9OQSpQ==}
@@ -1599,6 +1606,8 @@ snapshots:
   glob-to-regexp@0.4.1: {}
 
   is-arrayish@0.3.2: {}
+
+  itty-router@5.0.22: {}
 
   js-tokens@9.0.1: {}
 
