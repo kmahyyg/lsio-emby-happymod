@@ -8,7 +8,7 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
-import { Router, cors, error, json } from 'itty-router';
+import { Router, cors, error, json, withContent } from 'itty-router';
 import { env } from "cloudflare:workers";
 
 const isDebug = (env.CUR_ENV === "troubleshoot");
@@ -24,10 +24,9 @@ const { preflight, corsify } = cors({
 });
 
 const router = Router({
-		before: [preflight],
-		catch: error,
-		format: json,
-		finally: [corsify],
+	before: [preflight, withContent],
+	catch: error,
+	finally: [corsify],
 });
 
 
@@ -41,48 +40,55 @@ async function aLogDetailedRequest(req) {
 	} else {
 		fBodyData = "unknown-internal-error";
 	}
-	console.log({"oriReq": {"url": req.url, "headers": Object.fromEntries(req.headers), "bodyB64": fBodyData}});
+	console.log({ "oriReq": { "url": req.url, "headers": Object.fromEntries(req.headers), "bodyB64": fBodyData } });
 }
 
 function logDetailedRequest(req) {
-	aLogDetailedRequest(req).then(()=>{});
+	aLogDetailedRequest(req).then(() => { });
+}
+
+// calc ret-key
+function calcRetKey(fKey) {
+	//TODO 
 }
 
 // add status check
 router.get('/ystatus', () => {
-  return new Response('OK', { status: 200 });
+	return new Response('OK', { status: 200 });
 });
 
 // add echo check
 router.post('/reqlog', (req) => {
 	logDetailedRequest(req);
-  	return new Response('Please check backend log', { status: 200 });
+	return new Response('Please check backend log', { status: 200 });
 });
 
 // add all related emby route
 router.all('/admin/service/registration/validateDevice', (r) => {
 	if (isDebug) { logDetailedRequest(r); }
-	return json({"cacheExpirationDays":3650,"message":"Device Valid","resultCode":"GOOD"});
+	return json({ "cacheExpirationDays": 3650, "message": "Device Valid", "resultCode": "GOOD" });
 });
 
 router.all('/admin/service/registration/validate', (r) => {
 	if (isDebug) { logDetailedRequest(r); }
-	return json({"featId":"MBSupporter","registered":true,"expDate":"2099-01-01","key":""});
+	let fRetFeatId = r.content.featId ? r.content.featId : "";
+	return json({ "featId": "MBSupporter", "registered": true, "expDate": "2099-01-01", "key": "" });
 });
 
 router.all('/admin/service/registration/getStatus', (r) => {
 	if (isDebug) { logDetailedRequest(r); }
-	return json({"deviceStatus":"","planType":"Lifetime","subscriptions":{}});
+	return json({ "deviceStatus": "", "planType": "Lifetime", "subscriptions": {} });
 });
 
 router.all('/admin/service/appstore/register', (r) => {
 	if (isDebug) { logDetailedRequest(r); }
-	return json({"featId":"","registered":true,"expDate":"2099-01-01","key":""});
+	let fRetFeatId = r.content.featId ? r.content.featId : "";
+	return json({ "featId": fRetFeatId, "registered": true, "expDate": "2099-01-01", "key": "" });
 });
 
 router.all('/emby/Plugins/SecurityInfo', (r) => {
 	if (isDebug) { logDetailedRequest(r); }
-	return json({"SupporterKey":"","IsMBSupporter":true});
+	return json({ "SupporterKey": "", "IsMBSupporter": true });
 });
 
 // add fallback for all other routes

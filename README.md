@@ -2,16 +2,31 @@
 
 This is only used for research and learning purposes. Please do not use this in production or sale it as your own work.
 
-# Credits
+## Credits
 
 - Original work by: https://github.com/2017fighting/docker-mods/blob/emby-crack/Program.cs licensed under GPL v3.
 - Thanks to LinuxServer.io for Docker Mod mechanism and their template under: https://github.com/linuxserver/docker-mods
 
-# License 
+## License 
 
 GNU AGPL v3
 
-# FAQ
+## Usage
+1. You must use base image from [LinuxServer.io Emby](https://hub.docker.com/r/lscr.io/linuxserver/emby)
+2. Host your own authorization server [here](#host-authorization-server-yourself)
+3. Change `DOCKER_MODS` and add `EMBY_CRACK_URL` environment variable correspondingly
+```diff
+services:
+  emby:
+    image: lscr.io/linuxserver/emby:latest
+    environment:
+-      DOCKER_MODS: other-docker-mod
++      DOCKER_MODS: other-docker-mod|ghcr.io/username/emby-happymod:version
++      EMBY_CRACK_URL: https://embycrack.sample.com   # replace with your own URL
+```
+4. Aftre deployment your own emby server, input any alphabetic string as license key , you will get Emby Premiere features unlocked.
+
+## FAQ
 
 Referrence for S6 Service Lifecycle in LSIO docker image:
 - https://github.com/linuxserver/docker-emby
@@ -20,6 +35,13 @@ Referrence for S6 Service Lifecycle in LSIO docker image:
 
 Emby Official Guide:
 - https://emby.media/support/articles/Server-Data-Folder.html
+
+## Further Reading
+
+- https://blog.jiawei.xin/?p=469
+- https://crackemby.mb6.top (You may not directly use this service due to different url rewritten policy, especially for amending ".php" extension)
+
+------
 
 # Original Project README
 
@@ -40,7 +62,6 @@ services:
 +      DOCKER_MODS: other-docker-mod|ghcr.io/username/emby-happymod:version
 +      EMBY_CRACK_URL: https://embycrack.sample.com   # replace with your own URL
 ```
-4. After deployment of emby server, **DO NOT INPUT ANY LICENSE KEY** in emby web admin panel, otherwise your server will stay malfunctioned.
 
 ## Host Authorization Server Yourself
 
@@ -105,8 +126,3 @@ embycrack.sample.com {
     respond /emby/Plugins/SecurityInfo `{"SupporterKey":"","IsMBSupporter":true}`
 }
 ```
-
-## Further Reading
-
-- https://blog.jiawei.xin/?p=469
-- https://crackemby.mb6.top (You may not directly use this service due to different url rewritten policy, especially for amending ".php" extension)
