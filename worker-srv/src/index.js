@@ -8,7 +8,7 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
-import { Router, cors, error, json } from 'itty-router';
+import { Router, cors, error, json, withContent } from 'itty-router';
 import { env } from "cloudflare:workers";
 import { createHash } from "node:crypto"; 
 
@@ -102,10 +102,10 @@ router.all('/admin/service/registration/validateDevice', (r) => {
 	return json({ "cacheExpirationDays": 3650, "message": "Device Valid", "resultCode": "GOOD" });
 });
 
-router.all('/admin/service/registration/validate', (r) => {
+router.all('/admin/service/registration/validate', withContent, (r) => {
 	if (isDebug) { logDetailedRequest(r); }
-	let fRetFeatId = r.content.featId ? r.content.featId : "";
-	return json({ "featId": "MBSupporter", "registered": true, "expDate": "2099-01-01", "key": "" });
+	let fRetFeatId = r.content.feature ? r.content.feature : "MBSupporter";
+	return json({ "featId": fRetFeatId, "registered": true, "expDate": "2099-01-01", "key": "" });
 });
 
 router.all('/admin/service/registration/getStatus', (r) => {
@@ -113,9 +113,10 @@ router.all('/admin/service/registration/getStatus', (r) => {
 	return json({ "deviceStatus": "", "planType": "Lifetime", "subscriptions": {} });
 });
 
-router.all('/admin/service/appstore/register', (r) => {
+router.all('/admin/service/appstore/register', withContent, (r) => {
 	if (isDebug) { logDetailedRequest(r); }
-	let fRetFeatId = r.content.featId ? r.content.featId : "";
+	// unclear for body param name, just send response
+	let fRetFeatId = r.content.feature ? r.content.feature : "";
 	return json({ "featId": fRetFeatId, "registered": true, "expDate": "2099-01-01", "key": "" });
 });
 
