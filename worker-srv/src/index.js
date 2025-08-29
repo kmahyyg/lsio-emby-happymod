@@ -8,7 +8,7 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
-import { Router, cors, error, json, withContent } from 'itty-router';
+import { Router, cors, error, json } from 'itty-router';
 import { env } from "cloudflare:workers";
 import { createHash } from "node:crypto"; 
 
@@ -34,7 +34,9 @@ const router = Router({
 // util function
 async function aLogDetailedRequest(req) {
 	var fBodyData;
-	if (req.body instanceof ReadableStream) {
+	if (!req.body) {
+		fBodyData = "empty-body";
+	} else if (req.body instanceof ReadableStream) {
 		let tmpResp = new Response(req.body);
 		let tmpBodyTxt = await tmpResp.text();
 		fBodyData = btoa(tmpBodyTxt);
@@ -45,7 +47,23 @@ async function aLogDetailedRequest(req) {
 }
 
 function logDetailedRequest(req) {
-	aLogDetailedRequest(req).then(() => { });
+	aLogDetailedRequest(req).then(() => {});
+}
+
+async function parsePostURLForm(req) {
+	try {
+		// Check if the request has a body
+		if (!req.body) {
+			return {};
+		}
+
+		// Read the body as text and parse as URLSearchParams
+		const bodyText = await req.text();
+		return Object.fromEntries(new URLSearchParams(bodyText));
+	} catch (error) {
+		console.error('Error parsing form data:', error);
+		return {};
+	}
 }
 
 // calc ret-key
@@ -62,7 +80,7 @@ router.get('/ystatus', () => {
 
 // add licgen for MBSupporter
 router.get('/licgen', (req) => {
-	if (isDebug) { logDetailedRequest(req); }
+	if (isDebug) { logDetailedRequest(req.clone()); }
 	// get params
 	let reqU = new URL(req.url);
 	let lType = reqU.searchParams.get("featId") ? reqU.searchParams.get("featId") : "MBSupporter";
@@ -92,22 +110,23 @@ router.get('/licgen', (req) => {
 
 // add echo check
 router.post('/reqlog', (req) => {
-	logDetailedRequest(req);
+	logDetailedRequest(req.clone());
 	return new Response('Please check backend log', { status: 200 });
 });
 
 // add all related emby route
 router.all('/admin/service/registration/validateDevice', (r) => {
-	if (isDebug) { logDetailedRequest(r); }
+	if (isDebug) { logDetailedRequest(r.clone()); }
 	return json({ "cacheExpirationDays": 3650, "message": "Device Valid", "resultCode": "GOOD" });
 });
 
-router.all('/admin/service/registration/validate', withContent, (r) => {
-	if (isDebug) { logDetailedRequest(r); }
+router.all('/admin/service/registration/validate', async (r) => {
+	if (isDebug) { logDetailedRequest(r.clone()); }
+	let parsed_body = await parsePostURLForm(r);
 	// get feature from body
-	let fRetFeatId = r.content.feature ? r.content.feature : "MBSupporter";
+	let fRetFeatId = parsed_body.feature ? parsed_body.feature : "MBSupporter";
 	// get systemid from body
-	let rSystemId = r.content.systemid;
+	let rSystemId = parsed_body.systemid;
 	if (!rSystemId) {
 		return error(401);
 	}
@@ -120,19 +139,20 @@ router.all('/admin/service/registration/validate', withContent, (r) => {
 });
 
 router.all('/admin/service/registration/getStatus', (r) => {
-	if (isDebug) { logDetailedRequest(r); }
+	if (isDebug) { logDetailedRequest(r.clone()); }
 	return json({ "deviceStatus": "", "planType": "Lifetime", "subscriptions": {} });
 });
 
-router.all('/admin/service/appstore/register', withContent, (r) => {
-	if (isDebug) { logDetailedRequest(r); }
+router.all('/admin/service/appstore/register', async (r) => {
+	if (isDebug) { logDetailedRequest(r.clone()); }
+	let parsed_body = await parsePostURLForm(r);
 	// body content unclear, just send response
-	let fRetFeatId = r.content.feature ? r.content.feature : "";
+	let fRetFeatId = parsed_body.feature ? parsed_body.feature : "";
 	return json({ "featId": fRetFeatId, "registered": true, "expDate": "2099-01-01", "key": "" });
 });
 
 router.all('/emby/Plugins/SecurityInfo', (r) => {
-	if (isDebug) { logDetailedRequest(r); }
+	if (isDebug) { logDetailedRequest(r.clone()); }
 	return json({ "SupporterKey": "", "IsMBSupporter": true });
 });
 
