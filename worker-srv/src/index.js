@@ -8,8 +8,9 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
-import { Router, cors, error, json, withContent } from 'itty-router';
+import { Router, cors, error, json } from 'itty-router';
 import { env } from "cloudflare:workers";
+import { createHash } from "node:crypto"; 
 
 const isDebug = (env.CUR_ENV === "troubleshoot");
 
@@ -24,7 +25,7 @@ const { preflight, corsify } = cors({
 });
 
 const router = Router({
-	before: [preflight, withContent],
+	before: [preflight],
 	catch: error,
 	finally: [corsify],
 });
@@ -49,12 +50,44 @@ function logDetailedRequest(req) {
 
 // calc ret-key
 function calcRetKey(fKey) {
-	//TODO 
+	const hash = createHash('md5');
+	hash.update(fKey, 'utf8');
+	return hash.digest('hex').toUpperCase();
 }
 
 // add status check
 router.get('/ystatus', () => {
 	return new Response('OK', { status: 200 });
+});
+
+// add licgen for MBSupporter
+router.get('/licgen', (req) => {
+	if (isDebug) { logDetailedRequest(req); }
+	// get params
+	let reqU = new URL(req.url);
+	let lType = reqU.searchParams.get("featId") ? reqU.searchParams.get("featId") : "MBSupporter";
+	let fKey = reqU.searchParams.get("systemId");
+	if (!fKey) {
+		return new Response('SystemID is missing', { status: 400 });
+	}
+	//
+	// mbSupporter Key Generator
+	//
+	// SystemID/DeviceID: private static string GetNewId() => Guid.NewGuid().ToString("N");
+	// featID: MBSupporter
+	// secret: Ae3#fP!wi (v4.9.1.23, exposed via environment variable C_HMAC_SECRET)
+	//
+	//.PHPMd5Hash($"{feature}{serverId}Ae3#fP!wi");
+	//
+	// using (MD5 md5 = MD5.Create())
+	// {
+	//     byte[] bytes = Encoding.UTF8.GetBytes(pass);
+	//     return BitConverter.ToString(md5.ComputeHash(bytes)).Replace("-", "");
+	// }
+	//
+	let curSysOriK = lType + fKey + env.C_HMAC_SECRET;
+	let fRetKey = calcRetKey(curSysOriK);
+	return json({ "key": fRetKey });
 });
 
 // add echo check

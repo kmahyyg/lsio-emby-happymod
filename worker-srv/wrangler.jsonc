@@ -6,6 +6,7 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "nanometer-fled-9cb6",
 	"main": "src/index.js",
+	"compatibility_flags": ["nodejs_compat"],
 	"compatibility_date": "2025-08-28",
 	"observability": {
 		"enabled": true,
