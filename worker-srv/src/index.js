@@ -66,8 +66,8 @@ router.get('/licgen', (req) => {
 	// get params
 	let reqU = new URL(req.url);
 	let lType = reqU.searchParams.get("featId") ? reqU.searchParams.get("featId") : "MBSupporter";
-	let fKey = reqU.searchParams.get("systemId");
-	if (!fKey) {
+	let fSysId = reqU.searchParams.get("systemId");
+	if (!fSysId) {
 		return new Response('SystemID is missing', { status: 400 });
 	}
 	//
@@ -85,7 +85,7 @@ router.get('/licgen', (req) => {
 	//     return BitConverter.ToString(md5.ComputeHash(bytes)).Replace("-", "");
 	// }
 	//
-	let curSysOriK = lType + fKey + env.C_HMAC_SECRET;
+	let curSysOriK = lType + fSysId + env.C_HMAC_SECRET;
 	let fRetKey = calcRetKey(curSysOriK);
 	return json({ "key": fRetKey });
 });
@@ -104,8 +104,19 @@ router.all('/admin/service/registration/validateDevice', (r) => {
 
 router.all('/admin/service/registration/validate', withContent, (r) => {
 	if (isDebug) { logDetailedRequest(r); }
+	// get feature from body
 	let fRetFeatId = r.content.feature ? r.content.feature : "MBSupporter";
-	return json({ "featId": fRetFeatId, "registered": true, "expDate": "2099-01-01", "key": "" });
+	// get systemid from body
+	let rSystemId = r.content.systemid
+	if (!rSystemId) {
+		return error(401);
+	}
+	// render key
+	let fRetKey = calcRetKey(fRetFeatId + rSystemId + env.C_HMAC_SECRET);
+	// record resp
+	console.log({"feat": fRetFeatId, "systemid": rSystemId, "keyReturned": fRetKey});
+	// return now
+	return json({ "featId": fRetFeatId, "registered": true, "expDate": "2099-01-01", "key": fRetKey });
 });
 
 router.all('/admin/service/registration/getStatus', (r) => {
@@ -115,7 +126,7 @@ router.all('/admin/service/registration/getStatus', (r) => {
 
 router.all('/admin/service/appstore/register', withContent, (r) => {
 	if (isDebug) { logDetailedRequest(r); }
-	// unclear for body param name, just send response
+	// body content unclear, just send response
 	let fRetFeatId = r.content.feature ? r.content.feature : "";
 	return json({ "featId": fRetFeatId, "registered": true, "expDate": "2099-01-01", "key": "" });
 });
