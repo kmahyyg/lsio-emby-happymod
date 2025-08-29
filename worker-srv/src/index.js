@@ -107,7 +107,7 @@ router.all('/admin/service/registration/validate', withContent, (r) => {
 	// get feature from body
 	let fRetFeatId = r.content.feature ? r.content.feature : "MBSupporter";
 	// get systemid from body
-	let rSystemId = r.content.systemid
+	let rSystemId = r.content.systemid;
 	if (!rSystemId) {
 		return error(401);
 	}
