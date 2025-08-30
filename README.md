@@ -41,7 +41,7 @@ After deployment your own emby server:
 
 Taken Emby Premiere as an example and `226b2cf575faa73e64c29d37cac59427` as example server ID:
 
-- Open your browser and access: `https://your-worker/licgen?deviceId=226b2cf575faa73e64c29d37cac59427` to get your license key, if there's an independent feature that you'd like to enable, you can also specify `featId` parameter, e.g. `&featId=someAwesomeFeature`. You should NOT specify `featId` unless you know what you're doing.
+- Open your browser and access: `https://your-worker/licgen?systemId=226b2cf575faa73e64c29d37cac59427` to get your license key, if there's an independent feature that you'd like to enable, you can also specify `featId` parameter, e.g. `&featId=someAwesomeFeature`. You should NOT specify `featId` unless you know what you're doing.
 - Insert it to your emby server admin console
 - Restart your emby server. You may found license file under: `/config/config/mb.lic` .
 - Enjoy Emby Premiere features for free!
